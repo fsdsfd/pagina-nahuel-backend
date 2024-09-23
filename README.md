@@ -61,3 +61,11 @@ mongoexport --uri "mongodb+srv://cluster-it.jslcx1i.mongodb.net/" --username mpr
 <https://fastdl.mongodb.org/tools/db/mongodb-database-tools-windows-x86_64-100.10.0.msi>
 
 <https://www.mongodb.com/docs/database-tools/>
+
+# Solucioanr problema de cors
+
+<https://www.npmjs.com/package/cors>
+
+```sh
+npm i cors
+```

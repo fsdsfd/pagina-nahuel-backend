@@ -18,7 +18,7 @@ routerProductos.post('/', controladores.create)
 
 // ! PUT (UPDATE) -> Request de actualización de un producto
 // http://localhost:8080/api/v1/productos/{id} | el producto editado
-routerProductos.put('/:id', controladores.update) 
+routerProductos.put('/:id', controladores.update)
 
 // ! DELETE (DELETE) -> Request de borrado de un producto
 routerProductos.delete('/:id', controladores.remove)

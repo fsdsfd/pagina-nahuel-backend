@@ -45,13 +45,24 @@ const crearProducto = async (producto) => {
         return productoCreado       
         
     } catch (error) {
-        console.log('[crearProducto]', error)
+        //console.log('[crearProducto]', error)
+        throw error // Lanzo el error hacía la función que este utilizando esta función (crearProducto)
     }
 
 
 }
 
-const updateProducto = () => {
+const updateProducto = async (id, productoPorEditado) => {
+
+    try {
+
+        const options = { new: true }
+        const productoYaEditado = await ProductosModelo.findByIdAndUpdate(id, productoPorEditado, options)
+        return productoYaEditado
+        
+    } catch (error) {
+        throw error 
+    }
 
 }
 
