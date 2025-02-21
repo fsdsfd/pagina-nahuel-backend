@@ -1,19 +1,18 @@
-
 const uploadImagen = (req, res) => {
-    const file = req.file
+  const files = req.files;
 
-    if( !file ) {
-        return res.status(400).send('No se recibió ninguna imagen')
-    }
+  if (!files || files.length === 0) {
+      return res.status(400).send('No se recibieron imágenes');
+  }
 
-    console.log(req.protocol)
-    console.log(req.get('host')) // Obtengo url
+  console.log(req.protocol);
+  console.log(req.get('host')); // Obtengo url
 
-    const urlCompleta = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`
-    
-    res.status(201).json({foto: urlCompleta})    
-}
+  const urls = files.map(file => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`);
+
+  res.status(201).json({ archivos: urls });
+};
 
 export default {
-    uploadImagen
-}
+  uploadImagen
+};

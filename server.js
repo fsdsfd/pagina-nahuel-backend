@@ -24,7 +24,16 @@ app.use(cors()) // Todos los origines están permisos
 app.use('/api/v1/productos', routerProductos)
 app.use('/api/v1/carritos', routerCarritos)
 app.use('/api/v1/upload', routerUpload)
+const PASSWORD = "1234"; // Cámbiala por algo más seguro
 
+app.post("/login", (req, res) => {
+  const { password } = req.body;
+  if (password === PASSWORD) {
+    res.json({ success: true, token: "password" });
+  } else {
+    res.status(401).json({ success: false });
+  }
+});
 app.get('/', (req, res) => {
   res.redirect('/api/v1/productos')
 })

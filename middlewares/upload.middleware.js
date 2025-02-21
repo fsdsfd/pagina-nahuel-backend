@@ -17,6 +17,6 @@ const storage = multer.diskStorage({
 })
 
 // Creo el middleware a partir del obj config
-const uploadMiddleware = multer(  { storage }  )
+const uploadMiddleware = multer(  { storage: storage }  )
 
 export default uploadMiddleware
