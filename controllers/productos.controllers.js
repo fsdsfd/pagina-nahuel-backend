@@ -43,7 +43,7 @@ const create = async (req, res) => {
                 return res.status(400).json({ error: '"foto" no tiene formato JSON válido' })
             }
         }
-
+        console.log('[create] req.body.foto antes:', producto.foto)
         const productoCreado = await modelos.crearProducto(producto)
         res.status(201).json(handleMongoId(productoCreado))
     } catch (error) {
