@@ -19,7 +19,11 @@ const uri_remota = process.env.URI_MONGO
 app.use(express.static(path.join('public'))) // Disponibilizo la carpeta public para que justamente sea de acceso público
 app.use(express.json()) // Intrepeta el body y lo entiende
 app.use(cors()) // Todos los origines están permisos
-
+app.use(cors({
+  origin: 'https://famigas.netlify.app/', // tu frontend en Netlify
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
 // ! Rutas
 app.use('/api/v1/productos', routerProductos)
 app.use('/api/v1/carritos', routerCarritos)
