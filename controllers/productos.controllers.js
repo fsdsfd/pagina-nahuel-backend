@@ -26,15 +26,24 @@ const getOne = async(req, res) => {
 
 const create = async (req, res) => { 
     const producto = req.body
-    //console.log(producto)
+
+    // Validar y transformar "foto" si es necesario
+    if (typeof producto.foto === 'string') {
+        try {
+            producto.foto = JSON.parse(producto.foto) // convierte de string a array
+        } catch (e) {
+            console.log('Error al parsear "foto" como JSON', e)
+            return res.status(400).json({ error: '"foto" debe ser un array o un JSON válido' })
+        }
+    }
 
     try {
         const productoCreado = await modelos.crearProducto(producto)
-        res.status(201).json(handleMongoId(productoCreado)) // convierte el _id en id
+        res.status(201).json(handleMongoId(productoCreado))
     } catch (error) {
         console.log('[create]', error)
+        res.status(500).json({ error: 'Error al crear el producto' })
     }
-
 }
 
 const update = async (req, res) => { 

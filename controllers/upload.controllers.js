@@ -8,7 +8,7 @@ const uploadImagen = (req, res) => {
   console.log(req.protocol);
   console.log(req.get('host')); // Obtengo url
 
-  const urls = files.map(file => `${req.protocol}://pagina-nahuel-backend.onrender.com/uploads/${file.filename}`);
+  const urls = files.map(file => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`);
 
   res.status(201).json({ archivos: urls });
 };
