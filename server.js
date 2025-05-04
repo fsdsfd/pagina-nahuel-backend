@@ -20,7 +20,7 @@ app.use(express.static(path.join('public'))) // Disponibilizo la carpeta public 
 app.use(express.json()) // Intrepeta el body y lo entiende
 app.use(cors()) // Todos los origines están permisos
 app.use(cors({
-  origin: ['https://famigas.netlify.app', 'http://localhost:1235'],
+  origin: ['http://localhost:1235'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))

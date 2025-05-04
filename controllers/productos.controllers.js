@@ -25,19 +25,26 @@ const getOne = async(req, res) => {
 }
 
 const create = async (req, res) => {
-    const datos = req.body
+    console.log('Datos del body:', req.body);
+    console.log('Archivos recibidos:', req.files);
   
-    try {
-        const urls = req.files.map(file => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`)
-  
-      const productoCreado = await modelos.crearProducto(datos)
-      res.status(201).json(handleMongoId(productoCreado))
-  
-    } catch (error) {
-      console.log('[create]', error)
-      res.status(500).json({ error: 'Error al crear el producto' })
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: 'No se recibieron imágenes' });
     }
-  }
+    
+    try {
+      // Si el middleware de Cloudinary funciona correctamente, req.files tendrá propiedades como 'path' con la URL pública.
+      const urls = req.files.map(file => file.path);
+      req.body.foto = urls;
+  
+      const productoCreado = await modelos.crearProducto(req.body);
+      res.status(201).json(handleMongoId(productoCreado));
+      
+    } catch (error) {
+      console.log('[create]', error);
+      res.status(500).json({ error: 'Error al crear el producto' });
+    }
+  };
 const update = async (req, res) => { 
     const id = req.params.id
     const productoPorEditado = req.body
