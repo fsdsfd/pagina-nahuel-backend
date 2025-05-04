@@ -28,8 +28,7 @@ const create = async (req, res) => {
     const datos = req.body
   
     try {
-      const urls = req.files.map(file => file.path) // URL pública desde Cloudinary
-      datos.foto = urls
+        const urls = req.files.map(file => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`)
   
       const productoCreado = await modelos.crearProducto(datos)
       res.status(201).json(handleMongoId(productoCreado))

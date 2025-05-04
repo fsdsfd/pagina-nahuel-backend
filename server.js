@@ -24,7 +24,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
-app.use('api/v1/uploads', express.static('uploads'))
+app.use('/api/v1/uploads', express.static('uploads'))
 
 // ! Rutas
 app.use('/api/v1/productos', routerProductos)
