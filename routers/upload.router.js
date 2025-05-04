@@ -1,9 +1,9 @@
 import express from 'express'
-const routerUpload = express.Router()
-import controladores from '../controllers/upload.controllers.js'
-import uploadMiddleware from '../middlewares/upload.middleware.js'
+import productosController from '../controllers/productos.controller.js'
+import upload from '../middlewares/multer-cloudinary.js'
 
-/* POST - request para guardar una imagen */
-routerUpload.post('/', uploadMiddleware.array('foto', 7), controladores.uploadImagen)
+const router = express.Router()
 
-export default routerUpload
+router.post('/', upload.array('foto', 10), productosController.create)
+
+export default router

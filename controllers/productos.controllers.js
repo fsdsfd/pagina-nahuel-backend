@@ -25,32 +25,20 @@ const getOne = async(req, res) => {
 }
 
 const create = async (req, res) => {
-    const producto = req.body
-
-    console.log('[create] req.body.foto antes:', producto.foto)
-
+    const datos = req.body
+  
     try {
-        // Intentamos asegurar que foto sea array de strings
-        if (typeof producto.foto === 'string') {
-            try {
-                const parsedFoto = JSON.parse(producto.foto)
-                if (Array.isArray(parsedFoto) && parsedFoto.every(f => typeof f === 'string')) {
-                    producto.foto = parsedFoto
-                } else {
-                    return res.status(400).json({ error: '"foto" debe ser un array de strings válidos' })
-                }
-            } catch (e) {
-                return res.status(400).json({ error: '"foto" no tiene formato JSON válido' })
-            }
-        }
-        console.log('[create] req.body.foto antes:', producto.foto)
-        const productoCreado = await modelos.crearProducto(producto)
-        res.status(201).json(handleMongoId(productoCreado))
+      const urls = req.files.map(file => file.path) // URL pública desde Cloudinary
+      datos.foto = urls
+  
+      const productoCreado = await modelos.crearProducto(datos)
+      res.status(201).json(handleMongoId(productoCreado))
+  
     } catch (error) {
-        console.log('[create]', error)
-        res.status(500).json({ error: 'Error al crear el producto', detalle: error.message })
+      console.log('[create]', error)
+      res.status(500).json({ error: 'Error al crear el producto' })
     }
-}
+  }
 const update = async (req, res) => { 
     const id = req.params.id
     const productoPorEditado = req.body
