@@ -25,27 +25,36 @@ const getOne = async(req, res) => {
 }
 
 const create = async (req, res) => {
-    console.log('Datos del body:', req.body);
-    console.log('Archivos recibidos:', req.files);
+    // Obtenemos los datos del body
+    const datos = req.body;
   
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ error: 'No se recibieron imágenes' });
-    }
-    
     try {
-      // Si el middleware de Cloudinary funciona correctamente, req.files tendrá propiedades como 'path' con la URL pública.
-      const urls = req.files.map(file => file.path);
-      req.body.foto = urls;
+      // Si se subieron archivos (mediante multer en caso de usar multipart/form-data)
+      if (req.files && req.files.length > 0) {
+        datos.foto = req.files.map(file => file.path);
+      } 
+      // De lo contrario, si el front ya envió la URL de Cloudinary, la usamos
+      else if (datos.foto) {
+        // Aseguramos que sea un arreglo
+        datos.foto = Array.isArray(datos.foto) ? datos.foto : [datos.foto];
+      } else {
+        // Si no se envía ningún dato, definimos un arreglo vacío o generamos un error si el campo es obligatorio
+        datos.foto = [];
+      }
   
-      const productoCreado = await modelos.crearProducto(req.body);
+      // Validación mínima (por ejemplo, el campo "nombre" es obligatorio)
+      if (!datos.nombre) {
+        return res.status(400).json({ error: 'El campo "nombre" es requerido.' });
+      }
+  
+      const productoCreado = await modelos.crearProducto(datos);
       res.status(201).json(handleMongoId(productoCreado));
-      
     } catch (error) {
-      console.log('[create]', error);
-      res.status(500).json({ error: 'Error al crear el producto' });
+      console.error('[create]', error);
+      res.status(500).json({ error: 'Error al crear el producto', details: error.message });
     }
   };
-const update = async (req, res) => { 
+  const update = async (req, res) => { 
     const id = req.params.id
     const productoPorEditado = req.body
 
